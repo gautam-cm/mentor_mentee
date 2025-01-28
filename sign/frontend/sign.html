@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentor-Student Management</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .container h2 {
+            margin-bottom: 1rem;
+            color: #4CAF50;
+            text-align: center;
+        }
+
+        form {
+            margin-top: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        input, select, button {
+            margin-top: 5px;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Mentor-Student Management System</h1>
+    </header>
+
+    <!-- Login Form -->
+    <div class="container" id="login-container">
+        <h2>Login</h2>
+        <form id="login-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="role">Role:</label>
+            <select id="role" name="role" required>
+                <option value="admin">Admin</option>
+                <option value="mentor">Mentor</option>
+                <option value="student">Student</option>
+            </select>
+
+            <button type="button" onclick="handleLogin()">Login</button>
+        </form>
+        <p style="text-align: center; margin-top: 1rem;">
+            Don't have an account? <a href="#" onclick="showSignUp()">Sign up here</a>
+        </p>
+    </div>
+
+    <!-- Sign Up Form -->
+    <div class="container" id="signup-container" style="display: none;">
+        <h2>Sign Up</h2>
+        <form id="signup-form">
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" required>
+
+            <label for="role">Role:</label>
+            <select id="role-signup" name="role" required>
+                <option value="admin">Admin</option>
+                <option value="mentor">Mentor</option>
+                <option value="student">Student</option>
+            </select>
+
+            <label for="password">Password:</label>
+            <input type="password" id="signup-password" name="password" required>
+
+            <button type="button" onclick="handleSignUp()">Sign Up</button>
+        </form>
+        <p style="text-align: center; margin-top: 1rem;">
+            Already have an account? <a href="#" onclick="showLogin()">Login here</a>
+        </p>
+    </div>
+
+    <script>
+        // Handle login
+        function handleLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const role = document.getElementById('role').value;
+
+            if (username && password && role) {
+                fetch('http://localhost:3000/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password, role })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.token) {
+                        localStorage.setItem('token', data.token);  // Save token in local storage
+                        if (role === 'admin') {
+                            window.location.href = 'admin_dashboard.html';
+                        } else if (role === 'mentor') {
+                            window.location.href = 'mentor_dashboard.html';
+                        } else if (role === 'student') {
+                            window.location.href = 'student_dashboard.html';
+                        }
+                    } else {
+                        alert('Invalid credentials');
+                    }
+                })
+                .catch(err => alert('Error: ' + err));
+            } else {
+                alert('Please fill out all fields.');
+            }
+        }
+
+        // Handle sign-up
+        function handleSignUp() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const role = document.getElementById('role-signup').value;
+            const password = document.getElementById('signup-password').value;
+
+            if (name && email && phone && role && password) {
+                fetch('http://localhost:3000/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, email, phone, role, password })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        alert('Sign-up successful! Redirecting to login page.');
+                        showLogin();
+                    } else {
+                        alert('Sign-up failed');
+                    }
+                })
+                .catch(err => alert('Error: ' + err));
+            } else {
+                alert('Please fill out all fields.');
+            }
+        }
+
+        // Function to switch to the login view
+        function showLogin() {
+            document.getElementById('login-container').style.display = 'block';
+            document.getElementById('signup-container').style.display = 'none';
+        }
+
+        // Function to switch to the signup view
+        function showSignUp() {
+            document.getElementById('signup-container').style.display = 'block';
+            document.getElementById('login-container').style.display = 'none';
+        }
+    </script>
+
+    <footer>
+        <p>&copy; 2025 Mentor-Student Management System</p>
+    </footer>
+</body>
+
+</html>

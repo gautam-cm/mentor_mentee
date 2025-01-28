@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Internal CSS -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-image: url("RAIT.JPG"); /* Relative path */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            color: white;
+            text-align: center;
+        }
+
+        .logo-container {
+            width: 100%;
+            max-height: 200px;
+            overflow: hidden;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            width: 100%;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            width: 100%;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            width: 22rem;
+            height: 320px;
+            display: flex; 
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            animation: fadeInUp 1s ease-in-out;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 1.7rem;
+            color: #343a40;
+            font-weight: bold;
+        }
+
+        .card-text {
+            font-size: 1.1rem;
+            color: #6c757d;
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            background-color: #ff4081;
+            border: none;
+            padding: 10px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn-primary:hover {
+            background-color: #c60055;
+            transform: scale(1.05);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .profile-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-container:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .profile-container img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 150px;
+            padding: 10px 0;
+            text-align: left;
+        }
+
+        .profile-container:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-item {
+            color: #333;
+            padding: 10px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="logo-container">
+        <!-- Replace with your logo -->
+    </div>
+
+    <div class="profile-container">
+        <img src="profile-icon.jpg" alt="Profile Icon">
+        <div class="dropdown-menu">
+            <a href="logout.html" class="dropdown-item">Logout</a>
+            <a href="privacy-policy.html" class="dropdown-item">Personal Data Policy</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="container">
+            <!-- Mentor Mentee Form Card -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Mentor Mentee Form</h5>
+                    <p class="card-text">Fill in your personal details and mentor-mentee information.</p>
+                    <a href="/site1/student.html" class="btn btn-primary">Mentee Information</a>                </div>
+            </div>
+            
+            <!-- Leave Application Card -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Leave Application</h5>
+                    <p class="card-text">Submit your leave application and upload supporting documents.</p>
+                    <a href="/site2/leave.html" class="btn btn-primary">Apply for Leave</a>                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

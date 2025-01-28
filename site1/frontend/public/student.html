@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MENTEE FORM</title>
+    <style>
+        body {
+            height: 100%;
+            background-image: url('full.jpg'); /* Set your image path here */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        form {
+            background: rgb(255, 255, 255);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 50%;
+        }
+
+        h2, h3 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        textarea {
+            height: 80px;
+            resize: none;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            display: inline-block;
+            width: 32%;
+            border-radius: 5px;
+            margin: 10px 1%;
+        }
+
+        button.previous {
+            background-color: #ff9800;
+            color: white;
+            border: none;
+        }
+
+        button.previous:hover {
+            background-color: #e68a00;
+        }
+
+        button.next {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+        }
+
+        button.next:hover {
+            background-color: #43a047;
+        }
+
+        input[type="submit"] {
+            background-color: #2833a7;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #1f2a8e;
+        }
+    </style>
+</head>
+<body>
+    <form id="menteeForm" action="/submit-form" method="POST" enctype="multipart/form-data">
+        <h2>STUDENT INFORMATION FORM</h2>
+
+        <div class="step" id="step1">
+            <h3>Basic Information</h3>
+            <label>Upload Photo:</label>
+            <input type="file" name="photo" accept="image/*" required><br><br>
+            
+            <label>Date:</label>
+            <input type="date" name="date" required><br><br>
+
+            <label>Name:</label>
+            <input type="text" name="name" required><br><br>
+
+            <label>Roll No.:</label>
+            <input type="text" name="roll_no" required><br><br>
+
+            <label>Gender:</label>
+            <select name="gender" required>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select><br><br>
+
+            <label>Permanent Address:</label>
+            <textarea name="permanent_address" required></textarea><br><br>
+
+            <label>Postal Address:</label>
+            <textarea name="postal_address" required></textarea><br><br>
+
+            <label>Contact No.:</label>
+            <input type="text" name="contact" required><br><br>
+
+            <label>Email ID:</label>
+            <input type="email" name="email" required><br><br>
+
+            <button type="button" class="next" onclick="nextStep(2)">Next</button>
+        </div>
+
+        <div class="step" id="step2" style="display:none;">
+            <h3>Family Details</h3>
+            <label>Father's Name:</label>
+            <input type="text" name="father_name" required><br><br>
+
+            <label>Father's Occupation:</label>
+            <input type="text" name="father_occupation" required><br><br>
+
+            <label>Father's Contact No.:</label>
+            <input type="text" name="father_contact" required><br><br>
+
+            <label>Mother's Name:</label>
+            <input type="text" name="mother_name" required><br><br>
+
+            <label>Mother's Occupation:</label>
+            <input type="text" name="mother_occupation" required><br><br>
+
+            <label>Mother's Contact No.:</label>
+            <input type="text" name="mother_contact" required><br><br>
+
+            <button type="button" class="previous" onclick="prevStep(1)">Previous</button>
+            <button type="button" class="next" onclick="nextStep(3)">Next</button>
+        </div>
+
+        <div class="step" id="step3" style="display:none;">
+            <h3>Emergency Contact</h3>
+            <label>Emergency Contact Person:</label>
+            <input type="text" name="emergency_person" required><br><br>
+
+            <label>Relationship:</label>
+            <input type="text" name="relationship" required><br><br>
+
+            <label>Emergency Contact No.:</label>
+            <input type="text" name="emergency_contact" required><br><br>
+
+            <button type="button" class="previous" onclick="prevStep(2)">Previous</button>
+            <button type="button" class="next" onclick="nextStep(4)">Next</button>
+        </div>
+
+        <div class="step" id="step4" style="display:none;">
+            <h3>Additional Information</h3>
+            <label>Awards / Scholarships / Honors:</label>
+            <textarea name="awards"></textarea><br><br>
+
+            <label>Internships:</label>
+            <textarea name="internships"></textarea><br><br>
+
+            <label>GRE/CAT/GATE Score (if any):</label>
+            <input type="text" name="exam_score"><br><br>
+
+            <label>Co-curricular Activities:</label>
+            <textarea name="co_curricular"></textarea><br><br>
+
+            <label>Extra-curricular Activities:</label>
+            <textarea name="extra_curricular"></textarea><br><br>
+
+            <label>Hobbies / Achievements:</label>
+            <textarea name="hobbies"></textarea><br><br>
+
+            <label>Placement Details:</label>
+            <textarea name="placement"></textarea><br><br>
+
+            <label>Higher Studies Plans:</label>
+            <textarea name="higher_studies"></textarea><br><br>
+
+            <label>Suggestions / Remarks:</label>
+            <textarea name="suggestions"></textarea><br><br>
+
+            <button type="button" class="previous" onclick="prevStep(3)">Previous</button>
+            <input type="submit" value="Submit">
+        </div>
+    </form>
+
+    <script>
+        let currentStep = 1;
+
+        function showStep(step) {
+            const steps = document.querySelectorAll('.step');
+            steps.forEach((stepElement, index) => {
+                stepElement.style.display = (index === step - 1) ? 'block' : 'none';
+            });
+        }
+
+        function nextStep(step) {
+            currentStep = step;
+            showStep(currentStep);
+        }
+
+        function prevStep(step) {
+            currentStep = step;
+            showStep(currentStep);
+        }
+
+        // Initialize the first step
+        showStep(currentStep);
+    </script>
+</body>
+</html>
