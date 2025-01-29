@@ -79,9 +79,7 @@ app.post('/submit-form', upload.single('photo'), (req, res) => {
       postal_address, contact, email, father_name,
       father_occupation, father_contact, mother_name,
       mother_occupation, mother_contact, emergency_person,
-      relationship, emergency_contact, awards, internships,
-      exam_score, co_curricular, extra_curricular,
-      hobbies, placement, higher_studies, suggestions
+      relationship, emergency_contact
     } = req.body;
 
     const photoPath = req.file.path;
@@ -91,20 +89,16 @@ app.post('/submit-form', upload.single('photo'), (req, res) => {
         photo, date, name, roll_no, gender, permanent_address,
         postal_address, contact, email, father_name, father_occupation,
         father_contact, mother_name, mother_occupation, mother_contact,
-        emergency_person, relationship, emergency_contact, awards,
-        internships, exam_score, co_curricular, extra_curricular,
-        hobbies, placement, higher_studies, suggestions
+        emergency_person, relationship, emergency_contact
       )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, )
     `;
 
     const values = [
       photoPath, date, name, roll_no, gender, permanent_address,
       postal_address, contact, email, father_name, father_occupation,
       father_contact, mother_name, mother_occupation, mother_contact,
-      emergency_person, relationship, emergency_contact, awards,
-      internships, exam_score, co_curricular, extra_curricular,
-      hobbies, placement, higher_studies, suggestions
+      emergency_person, relationship, emergency_contact
     ];
 
     db.query(sql, values, (err, result) => {

@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mentor-Student Management</title>
-    <link rel="stylesheet" href="styles.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -45,7 +44,9 @@
             margin-top: 10px;
         }
 
-        input, select, button {
+        input,
+        select,
+        button {
             margin-top: 5px;
             width: 100%;
             padding: 10px;
@@ -78,7 +79,6 @@
         <h1>Mentor-Student Management System</h1>
     </header>
 
-    <!-- Login Form -->
     <div class="container" id="login-container">
         <h2>Login</h2>
         <form id="login-form">
@@ -102,10 +102,12 @@
         </p>
     </div>
 
-    <!-- Sign Up Form -->
     <div class="container" id="signup-container" style="display: none;">
         <h2>Sign Up</h2>
         <form id="signup-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username-signup" name="username" required>
+
             <label for="name">Full Name:</label>
             <input type="text" id="name" name="name" required>
 
@@ -133,82 +135,74 @@
     </div>
 
     <script>
-        // Handle login
         function handleLogin() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             const role = document.getElementById('role').value;
 
-            if (username && password && role) {
-                fetch('http://localhost:3000/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ username, password, role })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.token) {
-                        localStorage.setItem('token', data.token);  // Save token in local storage
-                        if (role === 'admin') {
-                            window.location.href = 'admin_dashboard.html';
-                        } else if (role === 'mentor') {
-                            window.location.href = 'mentor_dashboard.html';
-                        } else if (role === 'student') {
-                            window.location.href = 'student_dashboard.html';
-                        }
-                    } else {
-                        alert('Invalid credentials');
+            fetch('http://localhost:3005/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password, role })
+            })
+            .then(res => {
+                if (!res.ok) {
+                    return res.json().then(data => { throw new Error(data.message || 'Login failed!'); });
+                }
+                return res.json();
+            })
+            .then(data => {
+                if (data.token) {
+                    alert('Login successful!');
+                    // Redirect based on role
+                    if (role === 'student') {
+                        window.location.href = 'http://localhost:3003'; // Redirect to student page
                     }
-                })
-                .catch(err => alert('Error: ' + err));
-            } else {
-                alert('Please fill out all fields.');
-            }
+                }
+            })
+            .catch(err => {
+                alert('Error: ' + err.message);
+            });
         }
 
-        // Handle sign-up
         function handleSignUp() {
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const role = document.getElementById('role-signup').value;
-            const password = document.getElementById('signup-password').value;
+            const user = {
+                username: document.getElementById('username-signup').value,
+                password: document.getElementById('signup-password').value,
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                role: document.getElementById('role-signup').value
+            };
 
-            if (name && email && phone && role && password) {
-                fetch('http://localhost:3000/signup', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ name, email, phone, role, password })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.message) {
-                        alert('Sign-up successful! Redirecting to login page.');
-                        showLogin();
-                    } else {
-                        alert('Sign-up failed');
-                    }
-                })
-                .catch(err => alert('Error: ' + err));
-            } else {
-                alert('Please fill out all fields.');
-            }
+            fetch('http://localhost:3005/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(user)
+            })
+            .then(res => {
+                if (!res.ok) {
+                    return res.json().then(data => { throw new Error(data.message || 'Signup failed!'); });
+                }
+                return res.json();
+            })
+            .then(data => {
+                if (data.message) {
+                    alert('Signup successful!');
+                    showLogin();
+                }
+            })
+            .catch(err => alert('Error: ' + err.message));
         }
 
-        // Function to switch to the login view
         function showLogin() {
-            document.getElementById('login-container').style.display = 'block';
             document.getElementById('signup-container').style.display = 'none';
+            document.getElementById('login-container').style.display = 'block';
         }
 
-        // Function to switch to the signup view
         function showSignUp() {
-            document.getElementById('signup-container').style.display = 'block';
             document.getElementById('login-container').style.display = 'none';
+            document.getElementById('signup-container').style.display = 'block';
         }
     </script>
 

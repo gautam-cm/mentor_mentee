@@ -34,8 +34,7 @@ app.post('/submit', upload.single('photo'), (req, res) => {
         name, roll_no, gender, permanent_address, postal_address, contact,
         email, father_name, father_occupation, father_contact, mother_name,
         mother_occupation, mother_contact, emergency_person, relationship,
-        emergency_contact, awards, internships, exam_score, co_curricular,
-        extra_curricular, hobbies, placement, higher_studies, suggestions
+        emergency_contact
     } = req.body;
 
     const photo = req.file ? req.file.filename : null;
@@ -45,17 +44,15 @@ app.post('/submit', upload.single('photo'), (req, res) => {
             name, roll_no, gender, permanent_address, postal_address, contact,
             email, father_name, father_occupation, father_contact, mother_name,
             mother_occupation, mother_contact, emergency_person, relationship,
-            emergency_contact, awards, internships, exam_score, co_curricular,
-            extra_curricular, hobbies, placement, higher_studies, suggestions, photo
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            emergency_contact
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     db.query(sql, [
         name, roll_no, gender, permanent_address, postal_address, contact,
         email, father_name, father_occupation, father_contact, mother_name,
         mother_occupation, mother_contact, emergency_person, relationship,
-        emergency_contact, awards, internships, exam_score, co_curricular,
-        extra_curricular, hobbies, placement, higher_studies, suggestions, photo
+        emergency_contact
     ], (err, result) => {
         if (err) {
             console.error('Database Insert Error:', err);

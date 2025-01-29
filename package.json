@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "concurrently \"npm run backend1\" \"npm run backend2\" \"npm run backend3\" \"npm run backend4\" \"npm run backend5\"",
+    "backend1": "cross-env PORT=3001 node site1/backend/server.js",
+    "backend2": "cross-env PORT=3002 node site2/backend/server.js",
+    "backend3": "cross-env PORT=3003 node site3/backend/server.js",
+    "backend4": "cross-env PORT=3004 node parent-site/backend/server.js",
+    "backend5": "cross-env PORT=3005 node sign/server.js"
   },
   "keywords": [],
   "author": "",
@@ -13,12 +18,14 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "http-proxy-middleware": "^3.0.3",
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.12.0",
     "student-form-backen": "file:"
   },
-  "description": "",
   "devDependencies": {
+    "concurrently": "^7.3.0",
+    "cross-env": "^7.0.3",
     "nodemon": "^3.1.9"
   }
 }

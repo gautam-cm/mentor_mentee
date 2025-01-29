@@ -6,25 +6,34 @@ const path = require("path");
 const app = express();
 const port = 3004;
 
+// Load environment variables from .env file
+require("dotenv").config();
+
 // MySQL database connection
 const db = mysql.createConnection({
-    host: "localhost",
-    user: "admin",
-    password: "123456", // Update this with your actual password
-    database: "college",
+    host: process.env.DB_HOST || "localhost",
+    user: process.env.DB_USER || "admin",
+    password: process.env.DB_PASSWORD || "123456",
+    database: process.env.DB_NAME || "college",
 });
 
 // Test the database connection
 db.connect((err) => {
     if (err) {
         console.error("Error connecting to the database:", err.message);
+        process.exit(1); // Exit if the database connection fails
     } else {
         console.log("Connected to the MySQL database.");
     }
 });
 
 // Middleware to serve static files
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "../frontend")));
+
+// Route to serve the admin.html page (if needed explicitly)
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend/admin.html"));
+});
 
 // Middleware for JSON parsing
 app.use(bodyParser.json());
@@ -37,7 +46,7 @@ app.post("/assignStudent", (req, res) => {
         "INSERT INTO student_assignments (student_name, roll_no, email, teacher) VALUES (?, ?, ?, ?)";
     db.query(query, [studentName, rollNo, email, teacher], (err, result) => {
         if (err) {
-            console.error(err);
+            console.error("Error inserting data:", err.message);
             res.json({ success: false, message: "Failed to assign student." });
         } else {
             res.json({ success: true, message: "Student assigned successfully." });
@@ -47,21 +56,21 @@ app.post("/assignStudent", (req, res) => {
 
 // API endpoint to fetch student data
 app.get("/getStudents", (req, res) => {
-    const query = "SELECT * FROM student_assignments";  // SQL query to get all students
+    const teacher = req.query.teacher; // Optional query parameter
+    let query = "SELECT * FROM student_assignments";
 
-    db.query(query, (err, results) => {
+    if (teacher) {
+        query += " WHERE teacher = ?";
+    }
+
+    db.query(query, teacher ? [teacher] : [], (err, results) => {
         if (err) {
             console.error("Error fetching student data:", err.message);
             return res.json({ success: false, message: "Failed to load student data" });
         } else {
-            return res.json({ success: true, students: results });  // Send back the data
+            return res.json({ success: true, students: results });
         }
     });
-});
-
-// Route to serve the admin.html page
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend/admin.html")); // Updated to a relative path
 });
 
 // Start the server

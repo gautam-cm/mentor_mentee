@@ -64,6 +64,18 @@ app.post('/submit', upload.single('pdfFile'), (req, res) => {
     });
 });
 
+// New endpoint to fetch application status
+app.get('/status', (req, res) => {
+    const sql = 'SELECT * FROM applications ORDER BY id DESC'; // Adjust the query as needed
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Database error' });
+        }
+        res.status(200).json(results); // Send the results as JSON
+    });
+});
+
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
